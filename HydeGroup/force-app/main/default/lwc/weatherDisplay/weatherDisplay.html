@@ -1,0 +1,62 @@
+<!-- This is a Lightning Web Component template for displaying weather information  based on the location -->
+<template>
+   <lightning-card title="Weather Information">
+       <div class="slds-p-around_medium">
+            <!-- Display Weather Data Info  if weatherInfo__C are successfully loaded for the location -->
+           <template lwc:if={weatherData}>
+                <lightning-layout horizontal-align="center" pull-to-boundary="small">
+                    <lightning-layout-item size="1" medium-device-size="2" padding="around_xx-small">
+                        <lightning-card icon-name="standard:location" class="slds-align_absolute-center" title="Location">
+                            <div class="slds-align_absolute-center css-text">{weatherData.Location__r.Name}</div>
+                        </lightning-card>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="1" medium-device-size="2" padding="around_xx-small">
+                        <lightning-card icon-name="custom:custom97" class="slds-align_absolute-center" title="Current Temperature">
+                            <div class="slds-align_absolute-center css-text">{weatherData.Temperature__c} °C</div>
+                        </lightning-card>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="1" medium-device-size="2" padding="around_xx-small">
+                        <lightning-card icon-name="utility:flow" class="slds-align_absolute-center" title="Description">
+                            <div class="slds-align_absolute-center css-text">{weatherData.Weather_Description__c}</div>
+                        </lightning-card>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="1" medium-device-size="2" padding="around_xx-small">
+                        <lightning-card icon-name="utility:water" class="slds-align_absolute-center" title="Humidity">
+                            <div class="slds-align_absolute-center css-text">{weatherData.Humidity__c}%</div>
+                        </lightning-card>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="1" medium-device-size="2" padding="around_xx-small">
+                        <lightning-card icon-name="custom:custom97" class="slds-align_absolute-center" title="Max Temperature">
+                            <div class="slds-align_absolute-center css-text">{weatherData.Maximum_Temperature__c} °C</div>
+                        </lightning-card>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="1" medium-device-size="2" padding="around_xx-small">
+                        <lightning-card icon-name="custom:custom97" class="slds-align_absolute-center" title="Min Temperature">
+                            <div class="slds-align_absolute-center css-text">{weatherData.Minimum_Temperature__c} °C</div>
+                        </lightning-card>
+                    </lightning-layout-item>
+                </lightning-layout>
+           </template>
+           <!-- Display message if no weather data is loaded for the current location -->
+           <template lwc:else>
+               <div>No weather data available. Please click on refresh </div>
+           </template>
+           <!-- Refresh Button to fetch latest weather data -->
+           <div>
+               <template lwc:if={isRefreshing}>
+                   <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+               </template>
+               <lightning-button
+                   label="Refresh Weather"
+                   onclick={handleRefresh} 
+                   disabled={isRefreshing}
+                   class="slds-m-top_medium">
+               </lightning-button>
+           </div>
+            <!-- Display error message if there was an error loading weather data -->
+           <template lwc:if={hasError}>
+               <div class="slds-text-color_error">Error loading weather data: {errorMessage}</div>
+           </template>
+       </div>
+   </lightning-card>
+</template>
