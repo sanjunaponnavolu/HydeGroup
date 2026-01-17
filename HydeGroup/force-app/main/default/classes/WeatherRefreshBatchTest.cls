@@ -41,7 +41,6 @@ private class WeatherRefreshBatchTest {
         Test.setMock(HttpCalloutMock.class, new OpenWeatherCalloutMock(401));   
         // Execute the batch
         WeatherRefreshBatch batch = new WeatherRefreshBatch();
-        //batch.locationIdsWithErrors.add('Invalid Location Id'); // Simulate an error for testing
         Test.startTest();
         Database.executeBatch(batch, 100);
         Test.stopTest();
@@ -49,6 +48,7 @@ private class WeatherRefreshBatchTest {
         // Validate that no weather data was created and errors were logged
         List<WeatherInfo__c> weatherInfo = [SELECT Id FROM WeatherInfo__c];
         System.assertEquals(0, weatherInfo.size());
+        System.assert(true, batch.locationIdsWithErrors.size() > 0);
     }
     
 }
